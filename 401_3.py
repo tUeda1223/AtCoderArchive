@@ -5,7 +5,8 @@
 # Yakusuu: https://qiita.com/LorseKudos/items/9eb560494862c8b4eb56
 # Sosuu rekkyo https://qiita.com/wihan23/items/8aa52bcc4d9c45334b1c
 ##
-import os
+# import bisect,collections,copy,heapq,itertools,math,numpy,string, sys
+import sys,os, bisect
 if os.path.exists('input.txt'):
     r = open('input.txt','r')
     def input(): return r.readline()
@@ -15,19 +16,35 @@ def SIn(): return input().rstrip()
 def LIIn(): return list(map(int,input().rstrip().split()))
 def LSIn(): return list(input().rstrip().split()) # '0 1 0' -> ['0','1','0']
 def LSIn2(): return list(SIn()) # '010' -> ['0','1','0']
-# import bisect,collections,copy,heapq,itertools,math,numpy,string, sys
 def main():
+    # S = SIn()
+    # A = LIIn()
     # X = [list(SIn()) for _ in range(H)] # X[h][w]
     # X = [[0 for _ in range(W)] for _ in range(H)] # X[h][w]
-    N = IIn()
-    print(N)
+    N, K = LIIn()
+    if N <= K:
+        print(1)
+        import sys; sys.exit()
+    from collections import deque
+    queue = deque()
+    for n in range(K):
+        queue.append(1)
+    sum = K
+    ten9 = 10**9
+    for n in range(N-K):
+        tmp = sum
+        queue.append(tmp)
+        left = queue.popleft()
+        sum -= left
+        sum = (sum + tmp)%ten9
+        # print(queue)
+    print((sum)%ten9)
 
 def myFunc():
     return 0
 
 ################ Local functions ################
 chars = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-def exit(): import sys; sys.exit()
 def yesno(c): print('Yes' if c else 'No')
 def gcd(a,b):
     while b: a, b = b, (a%b)
@@ -36,6 +53,7 @@ def lcm(a,b): return a * b // gcd(a, b)
 def list2NP(matrix): import numpy as np; print(np.array(matrix))
 def bisectLeft(List,value): return bisect.bisect_left(List,value)
 def listAdd(A,B): return [a+b for a,b in zip(A,B)]
+def listErr(A,B): return [abs(a-b) for a,b in zip(A,B)]
 def ceilDiv(A,B): return (A+B-1)//B
 def floorDiv(A,B): return A//B
 def modAdd(A,B,N): return (A+B)%N
